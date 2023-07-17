@@ -11,6 +11,7 @@ const ApplyDoctor = () => {
   const navigate = useNavigate();
   //handle form
   const handleFinish = async values => {
+    console.log(values);
     try {
       dispatch(showLoading());
       const res = await axios.post(

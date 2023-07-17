@@ -88,8 +88,10 @@ const Profile = () => {
             initialValues={{
               ...doctor,
               timings: [
-                moment(doctor.timings[0], 'HH:mm'),
-                moment(doctor.timings[1], 'HH:mm')
+                // doctor.timings[0].format('HH:mm'),
+                // doctor.timings[1].format('HH:mm')
+                moment(new Date(doctor.timings[0])),
+                moment(new Date(doctor.timings[1]))
               ]
             }}
           >

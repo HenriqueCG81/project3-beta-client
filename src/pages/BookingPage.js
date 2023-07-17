@@ -3,14 +3,18 @@ import Layout from '../components/Layout';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { DatePicker, TimePicker } from 'antd';
-import moment from 'moment';
+import { DatePicker, TimePicker, message } from 'antd';
+import { useDispatch } from 'react-redux';
+import { showLoading, hideLoading } from '../redux/features/alertSlice';
+import { useSelector } from 'react-redux';
 const BookingPage = () => {
+  const { user } = useSelector(state => state.user);
   const params = useParams();
   const [doctors, setDoctors] = useState([]);
   const [date, setDate] = useState('');
-  const [timings, setTimings] = useState('');
+  const [time, setTime] = useState('');
   const [isAvailable, setIsAvailable] = useState();
+  const dispatch = useDispatch();
   const getUserData = async () => {
     try {
       const res = await axios.post(
@@ -26,6 +30,70 @@ const BookingPage = () => {
         return res.data.data;
       }
     } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleBooking = async () => {
+    try {
+      if (!date || !time) {
+        message.error('Please select date and time');
+        return;
+      }
+      dispatch(showLoading());
+      const res = await axios.post(
+        '/api/v1/user/book-appointment',
+        {
+          doctorId: params.doctorId,
+          userId: user._id,
+          doctorInfo: {
+            _id: doctors._id,
+            userId: doctors.userId,
+            firstName: doctors.firstName,
+            lastName: doctors.lastName
+          },
+          userInfo: user,
+          date: date,
+          time: time
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        }
+      );
+      dispatch(hideLoading());
+      if (res.data.success) {
+        message.success(res.data.message);
+      }
+    } catch (error) {
+      dispatch(hideLoading());
+      console.log(error);
+    }
+  };
+
+  const handleAvailability = async () => {
+    try {
+      dispatch(showLoading());
+      const res = await axios.post(
+        '/api/v1/user/booking-availability',
+        { doctorId: params.doctorId, date: date, time: time },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        }
+      );
+      dispatch(hideLoading());
+      if (res.data.success) {
+        setIsAvailable(true); // Atualiza o estado com base na resposta do servidor
+        message.success(res.data.message);
+      } else {
+        setIsAvailable(false); // Atualiza o estado com base na resposta do servidor
+        message.error(res.data.message);
+      }
+    } catch (error) {
+      dispatch(hideLoading());
       console.log(error);
     }
   };
@@ -57,20 +125,33 @@ const BookingPage = () => {
               <DatePicker
                 className="m-2"
                 format={'DD-MM-YYYY'}
-                onChange={value => setDate(moment(value).format('DD-MM-YYYY'))}
+                onChange={value => {
+                  setIsAvailable(false);
+                  setDate(value.format('DD-MM-YYYY'));
+                }}
               />
-              <TimePicker.RangePicker
+              <TimePicker
                 className="m-2"
                 format={'HH:mm'}
-                onChange={values =>
-                  setTimings([
-                    moment(values[0]).format('HH:mm'),
-                    moment(values[1]).format('HH:mm')
-                  ])
-                }
+                onChange={value => {
+                  setIsAvailable(false);
+                  setTime(value.format('HH:mm'));
+                }}
               />
-              <button className="btn btn-primary mt-2">
+              <button
+                className="btn btn-primary mt-2"
+                onClick={handleAvailability}
+                type="submit"
+              >
                 Check Availability
+              </button>
+
+              <button
+                className="btn btn-dark mt-2"
+                onClick={handleBooking}
+                type="submit"
+              >
+                Book Now
               </button>
             </div>
           </div>
