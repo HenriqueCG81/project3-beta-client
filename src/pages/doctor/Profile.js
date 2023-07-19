@@ -85,13 +85,12 @@ const Profile = () => {
             layout="vertical"
             onFinish={handleFinish}
             className="m-3"
+            name="timings"
             initialValues={{
               ...doctor,
               timings: [
-                // doctor.timings[0].format('HH:mm'),
-                // doctor.timings[1].format('HH:mm')
-                moment(new Date(doctor.timings[0])),
-                moment(new Date(doctor.timings[1]))
+                moment(doctor.timings[0], 'HH:mm'),
+                moment(doctor.timings[1], 'HH:mm')
               ]
             }}
           >

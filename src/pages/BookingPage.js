@@ -7,14 +7,16 @@ import { DatePicker, TimePicker, message } from 'antd';
 import { useDispatch } from 'react-redux';
 import { showLoading, hideLoading } from '../redux/features/alertSlice';
 import { useSelector } from 'react-redux';
+
 const BookingPage = () => {
   const { user } = useSelector(state => state.user);
   const params = useParams();
   const [doctors, setDoctors] = useState([]);
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
-  const [isAvailable, setIsAvailable] = useState();
+  const [isAvailable, setIsAvailable] = useState(false);
   const dispatch = useDispatch();
+
   const getUserData = async () => {
     try {
       const res = await axios.post(
@@ -26,10 +28,40 @@ const BookingPage = () => {
           }
         }
       );
+
       if (res.data.success) {
         return res.data.data;
       }
     } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleAvailability = async () => {
+    try {
+      dispatch(showLoading());
+
+      const res = await axios.post(
+        '/api/v1/user/booking-availability',
+        { doctorId: params.doctorId, date: date, time: time },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        }
+      );
+
+      dispatch(hideLoading());
+
+      if (res.data.success) {
+        setIsAvailable(true);
+        message.success(res.data.message);
+      } else {
+        setIsAvailable(false);
+        message.error(res.data.message);
+      }
+    } catch (error) {
+      dispatch(hideLoading());
       console.log(error);
     }
   };
@@ -41,6 +73,32 @@ const BookingPage = () => {
         return;
       }
       dispatch(showLoading());
+
+      const availabilityRes = await axios.post(
+        '/api/v1/user/booking-availability',
+        { doctorId: params.doctorId, date: date, time: time },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        }
+      );
+
+      if (!availabilityRes.data.success) {
+        // Se a resposta indicar que o horário não está disponível
+        message.error(availabilityRes.data.message);
+        dispatch(hideLoading());
+        return;
+      }
+
+      if (!availabilityRes.data.isAvailable) {
+        // Se o horário não estiver disponível
+        message.error('Doctor is not available at this time');
+        dispatch(hideLoading());
+        return;
+      }
+
+      // Horário está disponível, prossegue com a marcação
       const res = await axios.post(
         '/api/v1/user/book-appointment',
         {
@@ -50,7 +108,8 @@ const BookingPage = () => {
             _id: doctors._id,
             userId: doctors.userId,
             firstName: doctors.firstName,
-            lastName: doctors.lastName
+            lastName: doctors.lastName,
+            phone: doctors.phone
           },
           userInfo: user,
           date: date,
@@ -62,35 +121,11 @@ const BookingPage = () => {
           }
         }
       );
-      dispatch(hideLoading());
-      if (res.data.success) {
-        message.success(res.data.message);
-      }
-    } catch (error) {
-      dispatch(hideLoading());
-      console.log(error);
-    }
-  };
 
-  const handleAvailability = async () => {
-    try {
-      dispatch(showLoading());
-      const res = await axios.post(
-        '/api/v1/user/booking-availability',
-        { doctorId: params.doctorId, date: date, time: time },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
-        }
-      );
       dispatch(hideLoading());
+
       if (res.data.success) {
-        setIsAvailable(true); // Atualiza o estado com base na resposta do servidor
         message.success(res.data.message);
-      } else {
-        setIsAvailable(false); // Atualiza o estado com base na resposta do servidor
-        message.error(res.data.message);
       }
     } catch (error) {
       dispatch(hideLoading());
@@ -125,18 +160,12 @@ const BookingPage = () => {
               <DatePicker
                 className="m-2"
                 format={'DD-MM-YYYY'}
-                onChange={value => {
-                  setIsAvailable(false);
-                  setDate(value.format('DD-MM-YYYY'));
-                }}
+                onChange={value => setDate(value.format('DD-MM-YYYY'))}
               />
               <TimePicker
                 className="m-2"
                 format={'HH:mm'}
-                onChange={value => {
-                  setIsAvailable(false);
-                  setTime(value.format('HH:mm'));
-                }}
+                onChange={value => setTime(value.format('HH:mm'))}
               />
               <button
                 className="btn btn-primary mt-2"
@@ -160,4 +189,5 @@ const BookingPage = () => {
     </Layout>
   );
 };
+
 export default BookingPage;

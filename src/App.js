@@ -13,6 +13,7 @@ import Users from './pages/admin/Users';
 import Doctors from './pages/admin/Doctors';
 import Profile from './pages/doctor/Profile';
 import BookingPage from './pages/BookingPage';
+import Appointments from './pages/Appointments';
 function App() {
   const { loading } = useSelector(state => state.alerts);
   return (
@@ -91,6 +92,14 @@ function App() {
               <PlublicRoute>
                 <Register />
               </PlublicRoute>
+            }
+          />
+          <Route
+            path="/appointments"
+            element={
+              <ProtectedRoute>
+                <Appointments />
+              </ProtectedRoute>
             }
           />
         </Routes>
