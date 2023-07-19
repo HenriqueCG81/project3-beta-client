@@ -20,7 +20,7 @@ const BookingPage = () => {
   const getUserData = async () => {
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_PROJECTS_API}/api/v1/doctor/getDoctorById`,
+        `${process.env.REACT_APP_API_URL}/api/v1/doctor/getDoctorById`,
         { doctorId: params.doctorId },
         {
           headers: {
@@ -42,7 +42,7 @@ const BookingPage = () => {
       dispatch(showLoading());
 
       const res = await axios.post(
-        `${import.meta.env.VITE_PROJECTS_API}/api/v1/user/booking-availability`,
+        `${process.env.REACT_APP_API_URL}/api/v1/user/booking-availability`,
         { doctorId: params.doctorId, date: date, time: time },
         {
           headers: {
@@ -75,7 +75,7 @@ const BookingPage = () => {
       dispatch(showLoading());
 
       const availabilityRes = await axios.post(
-        `${import.meta.env.VITE_PROJECTS_API}/api/v1/user/booking-availability`,
+        `${process.env.REACT_APP_API_URL}/api/v1/user/booking-availability`,
         { doctorId: params.doctorId, date: date, time: time },
         {
           headers: {
@@ -100,7 +100,7 @@ const BookingPage = () => {
 
       // Horário está disponível, prossegue com a marcação
       const res = await axios.post(
-        `${import.meta.env.VITE_PROJECTS_API}/api/v1/user/book-appointment`,
+        `${process.env.REACT_APP_API_URL}/api/v1/user/book-appointment`,
         {
           doctorId: params.doctorId,
           userId: user._id,

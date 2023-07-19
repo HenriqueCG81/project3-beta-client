@@ -13,7 +13,7 @@ export default function ProtectedRoute({ children }) {
     try {
       dispatch(showLoading());
       const res = await axios.post(
-        `${import.meta.env.VITE_PROJECTS_API}/api/v1/user/getUserData`,
+        `${process.env.REACT_APP_API_URL}/api/v1/user/getUserData`,
         {
           token: localStorage.getItem('token')
         },

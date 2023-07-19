@@ -8,7 +8,7 @@ const Users = () => {
   const getUsers = async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_PROJECTS_API}/api/v1/admin/getAllUsers`,
+        `${process.env.REACT_APP_API_URL}/api/v1/admin/getAllUsers`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`

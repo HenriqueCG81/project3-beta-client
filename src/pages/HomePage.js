@@ -8,7 +8,7 @@ import DoctorList from '../components/DoctorList';
 const getUserData = async () => {
   try {
     const res = await axios.get(
-      `${import.meta.env.VITE_PROJECTS_API}/api/v1/user/getAllDoctors`,
+      `${process.env.REACT_APP_API_URL}/api/v1/user/getAllDoctors`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`

@@ -13,7 +13,7 @@ const Register = () => {
     try {
       dispatch(showLoading());
       const res = await axios.post(
-        `${import.meta.env.VITE_PROJECTS_API}http:/api/v1/user/register`,
+        `${process.env.REACT_APP_API_URL}/api/v1/user/register`,
         values
       );
       dispatch(hideLoading());

@@ -9,9 +9,7 @@ const DoctorAppointments = () => {
   const getAppointments = async () => {
     try {
       const res = await axios.get(
-        `${
-          import.meta.env.VITE_PROJECTS_API
-        }/api/v1/doctor/doctor-appointments`,
+        `${process.env.REACT_APP_API_URL}/api/v1/doctor/doctor-appointments`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -33,7 +31,7 @@ const DoctorAppointments = () => {
   const handleStatus = async (record, status) => {
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_PROJECTS_API}/api/v1/doctor/update-status`,
+        `${process.env.REACT_APP_API_URL}/api/v1/doctor/update-status`,
         { appointmentsId: record._id, status },
         {
           headers: {

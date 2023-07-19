@@ -10,7 +10,7 @@ const Appointments = () => {
   const getAppointments = async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_PROJECTS_API}/api/v1/user/user-appointments`,
+        `${process.env.REACT_APP_API_URL}/api/v1/user/user-appointments`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`

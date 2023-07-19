@@ -42,9 +42,7 @@ const NotificationPage = () => {
     try {
       dispatch(showLoading());
       const res = await axios.post(
-        `${
-          import.meta.env.VITE_PROJECTS_API
-        }/api/v1/user/delete-all-notification`,
+        `${process.env.REACT_APP_API_URL}/api/v1/user/delete-all-notification`,
         { userId: user._id },
         {
           headers: {
