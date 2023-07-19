@@ -140,7 +140,7 @@ const ApplyDoctor = () => {
           </Col>
           <Col xs={24} sm={12} md={8} lg={6}>
             <Form.Item label="Timings" name="timings" required>
-              <TimePicker.RangePicker format="HH:mm" />
+              <TimePicker.RangePicker format={'HH:mm'} />
             </Form.Item>
           </Col>
           <Col xs={24} sm={12} md={8} lg={6}></Col>
