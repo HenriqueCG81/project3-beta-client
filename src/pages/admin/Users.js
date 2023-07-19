@@ -7,11 +7,14 @@ const Users = () => {
 
   const getUsers = async () => {
     try {
-      const res = await axios.get('/api/v1/admin/getAllUsers', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+      const res = await axios.get(
+        `${import.meta.env.VITE_PROJECTS_API}/api/v1/admin/getAllUsers`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
         }
-      });
+      );
       if (res.data.success) {
         setUsers(res.data.data);
       }

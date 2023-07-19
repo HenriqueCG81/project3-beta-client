@@ -12,7 +12,10 @@ const Register = () => {
   const onFinishingHandler = async values => {
     try {
       dispatch(showLoading());
-      const res = await axios.post('http:/api/v1/user/register', values);
+      const res = await axios.post(
+        `${import.meta.env.VITE_PROJECTS_API}http:/api/v1/user/register`,
+        values
+      );
       dispatch(hideLoading());
       if (res.data.success) {
         message.success('Register Successfully');

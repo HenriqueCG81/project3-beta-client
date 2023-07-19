@@ -8,11 +8,16 @@ const DoctorAppointments = () => {
 
   const getAppointments = async () => {
     try {
-      const res = await axios.get('/api/v1/doctor/doctor-appointments', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+      const res = await axios.get(
+        `${
+          import.meta.env.VITE_PROJECTS_API
+        }/api/v1/doctor/doctor-appointments`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
         }
-      });
+      );
       if (res.data.success) {
         setAppointments(res.data.data);
       }
@@ -28,7 +33,7 @@ const DoctorAppointments = () => {
   const handleStatus = async (record, status) => {
     try {
       const res = await axios.post(
-        '/api/v1/doctor/update-status',
+        `${import.meta.env.VITE_PROJECTS_API}/api/v1/doctor/update-status`,
         { appointmentsId: record._id, status },
         {
           headers: {

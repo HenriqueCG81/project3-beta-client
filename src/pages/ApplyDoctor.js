@@ -15,7 +15,7 @@ const ApplyDoctor = () => {
     try {
       dispatch(showLoading());
       const res = await axios.post(
-        '/api/v1/user/apply-doctor',
+        `${import.meta.env.VITE_PROJECTS_API}/api/v1/user/apply-doctor`,
         { ...values, userId: user._id },
         {
           headers: {

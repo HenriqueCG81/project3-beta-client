@@ -7,11 +7,14 @@ import DoctorList from '../components/DoctorList';
 // Função para obter os dados do usuário
 const getUserData = async () => {
   try {
-    const res = await axios.get('/api/v1/user/getAllDoctors', {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
+    const res = await axios.get(
+      `${import.meta.env.VITE_PROJECTS_API}/api/v1/user/getAllDoctors`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
       }
-    });
+    );
     if (res.data.success) {
       return res.data.data;
     }
