@@ -7,7 +7,7 @@ import { DatePicker, TimePicker, message } from 'antd';
 import { useDispatch } from 'react-redux';
 import { showLoading, hideLoading } from '../redux/features/alertSlice';
 import { useSelector } from 'react-redux';
-
+import moment from 'moment';
 const BookingPage = () => {
   const { user } = useSelector(state => state.user);
   const params = useParams();
@@ -154,7 +154,8 @@ const BookingPage = () => {
             </h4>
             <h4>Fees: {doctors.feesPerConsultation}</h4>
             <h4>
-              Timings: {doctors.timings[0]} - {doctors.timings[1]}
+              Timings: {moment(doctors.timings[0]).format('HH:mm')} -{' '}
+              {moment(doctors.timings[1]).format('HH:mm')}
             </h4>
             <div className="d-flex flex-column">
               <DatePicker
