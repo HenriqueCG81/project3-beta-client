@@ -154,7 +154,8 @@ const BookingPage = () => {
             </h4>
             <h4>Fees: {doctors.feesPerConsultation}</h4>
             <h4>
-              Timings: {doctors.timings[0]} - {doctors.timings[1]}
+              Timings: {moment(doctors.timings[0]).format('HH:mm')} -{' '}
+              {moment(doctors.timings[1]).format('HH:mm')}
             </h4>
             <div className="d-flex flex-column">
               <DatePicker
