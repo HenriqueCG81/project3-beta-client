@@ -21,6 +21,7 @@ const Profile = () => {
   dayjs.locale('pt-br');
 
   const handleFinish = async values => {
+    console.log(values);
     try {
       dispatch(showLoading());
       const res = await axios.post(
@@ -28,10 +29,7 @@ const Profile = () => {
         {
           ...values,
           userId: user._id,
-          timings: [
-            values.timings[0].format('HH:mm'),
-            values.timings[1].format('HH:mm')
-          ]
+          timings: [values.timings[0], 'HH:mm', values.timings[1], 'HH:mm']
         },
         {
           headers: {
