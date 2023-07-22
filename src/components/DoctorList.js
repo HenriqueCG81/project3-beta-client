@@ -1,5 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
+
 const DoctorList = ({ doctor }) => {
   const navigate = useNavigate();
   return (
@@ -23,7 +25,8 @@ const DoctorList = ({ doctor }) => {
             <b>Fees Per Consultation</b> {doctor.feesPerConsultation}
           </p>
           <p>
-            <b>Timings</b> {doctor.timings[0]} - {doctor.timings[1]}
+            <b>Timings</b> {moment(doctor.timings[0]).format('HH:mm')} -{' '}
+            {moment(doctor.timings[1]).format('HH:mm')}
           </p>
         </div>
       </div>
