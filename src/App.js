@@ -24,6 +24,22 @@ function App() {
       ) : (
         <Routes>
           <Route
+            path="/login"
+            element={
+              <PlublicRoute>
+                <Login />
+              </PlublicRoute>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <PlublicRoute>
+                <Register />
+              </PlublicRoute>
+            }
+          />
+          <Route
             path="/"
             element={
               <ProtectedRoute>
@@ -79,22 +95,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/login"
-            element={
-              <PlublicRoute>
-                <Login />
-              </PlublicRoute>
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              <PlublicRoute>
-                <Register />
-              </PlublicRoute>
-            }
-          />
+
           <Route
             path="/appointments"
             element={
