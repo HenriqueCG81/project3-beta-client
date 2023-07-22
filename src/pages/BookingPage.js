@@ -7,7 +7,7 @@ import { DatePicker, TimePicker, message } from 'antd';
 import { useDispatch } from 'react-redux';
 import { showLoading, hideLoading } from '../redux/features/alertSlice';
 import { useSelector } from 'react-redux';
-
+import moment from 'moment';
 const BookingPage = () => {
   const { user } = useSelector(state => state.user);
   const params = useParams();
