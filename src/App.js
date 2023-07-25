@@ -15,6 +15,7 @@ import Profile from './pages/doctor/Profile';
 import BookingPage from './pages/BookingPage';
 import Appointments from './pages/Appointments';
 import DoctorAppointments from './pages/doctor/DoctorAppointments';
+import UserProfileEdit from './pages/user/UserProfileEdit';
 function App() {
   const { loading } = useSelector(state => state.alerts);
   return (
@@ -39,6 +40,7 @@ function App() {
               </PlublicRoute>
             }
           />
+          <Route path="/user/profile/:id" element={<UserProfileEdit />} />
           <Route
             path="/"
             element={

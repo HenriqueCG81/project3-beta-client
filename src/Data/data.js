@@ -1,21 +1,3 @@
-export const userMenu = [
-  {
-    name: 'Home',
-    path: '/',
-    icon: 'fa-solid fa-house'
-  },
-  {
-    name: 'Appointments',
-    path: '/appointments',
-    icon: 'fa-solid fa-calendar'
-  },
-  {
-    name: 'Apply Doctor',
-    path: '/apply-doctor',
-    icon: 'fa-sharp fa-light fa-user-doctor'
-  }
-];
-
 //admin menu
 export const adminMenu = [
   {
