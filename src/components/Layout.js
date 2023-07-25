@@ -105,7 +105,7 @@ const Layout = ({ children }) => {
               >
                 <i className="fa-solid fa-bell"></i>
               </Badge>
-              <Link to="/profile">{user && user.name}</Link>{' '}
+              <Link to="/">{user && user.name}</Link>{' '}
             </div>
           </div>
           <div className="body">{children}</div>
