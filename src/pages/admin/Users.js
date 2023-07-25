@@ -23,7 +23,30 @@ const Users = () => {
     }
   };
 
-  const colums = [
+  const handleDelete = async userId => {
+    try {
+      const res = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/api/v1/admin/deleteUser/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        }
+      );
+      if (res.data.success) {
+        // Remove the deleted user from the local state
+        setUsers(prevUsers => prevUsers.filter(user => user._id !== userId));
+      } else {
+        // Handle error, show error message or notification
+        console.log(res.data.message);
+      }
+    } catch (error) {
+      // Handle error, show error message or notification
+      console.log(error);
+    }
+  };
+
+  const columns = [
     {
       title: 'Name',
       dataIndex: 'name'
@@ -42,7 +65,13 @@ const Users = () => {
       dataIndex: 'actions',
       render: (text, record) => (
         <div className="d-flex">
-          <button className="btn btn-danger">Block</button>
+          {/* Add onClick event for the delete action */}
+          <button
+            className="btn btn-danger"
+            onClick={() => handleDelete(record._id)}
+          >
+            Delete
+          </button>
         </div>
       )
     }
@@ -54,7 +83,7 @@ const Users = () => {
   return (
     <Layout>
       <h1 className="text-center m-2">All Users</h1>
-      <Table columns={colums} dataSource={users} />
+      <Table columns={columns} dataSource={users} />
     </Layout>
   );
 };
